@@ -8,5 +8,22 @@ services:
       - .:/code
     environment:
       FLASK_ENV: development
-  redishost:
-    image: "redis:alpine"
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: counter_db
+      DB_USER: user
+      DB_PASSWORD: password
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: counter_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
